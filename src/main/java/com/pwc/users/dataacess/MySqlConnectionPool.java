@@ -3,14 +3,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import com.pwc.users.util.Property;
 public class MySqlConnectionPool {
 
     private static ArrayBlockingQueue<Connection> connectionPool ;
-    
+    private static int numberOfConnections;
     static {
-    	/*should be read from configrations*/
-    	int numberOfConnections = 10; 
+    	
+        numberOfConnections = Integer.parseInt(Property.getPropertyObjcet().getProperty("mysql.poolSize")); 
     	try {
     	MySqlConnectionPool.createConnectionPool(numberOfConnections);
     	}
@@ -30,7 +33,13 @@ public class MySqlConnectionPool {
 
     
     public static Connection getConnectoin(){
-
+        if(connectionPool == null)
+			try {
+				createConnectionPool(numberOfConnections);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         return connectionPool.poll() ;
     }
 
@@ -58,21 +67,6 @@ public class MySqlConnectionPool {
     }
     
     public static void main(String args[]) throws Exception {
-    	MySqlConnectionPool.createConnectionPool(10);
-    	Connection conn = MySqlConnectionPool.getConnectoin();
-    	String query = " select * from user" ;
-    	try(PreparedStatement ps = conn.prepareStatement(query);)
-    	{
-    		ResultSet rs=ps.executeQuery();  
-    		while(rs.next()){  
-    		System.out.println(rs.getInt(1)+" "+rs.getString(2));  
-    		}  
-    		
-    	}
-    	catch(Exception ex) {
-    		
-    	}
     	
-    	MySqlConnectionPool.shutdown();
     }
 }
