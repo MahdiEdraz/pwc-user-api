@@ -54,6 +54,23 @@ public class ProjectDataAccess {
 			
 			return list ;
 	}
+	
+	public int addUserToProject(Project project) {
+		String query = " insert into project (project_name,assigned_userid) values (?,?) " ;
+		Connection conn =MySqlConnectionPool.getConnectoin();
+		int result = -1;
+		try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setString(1, project.getName());  
+            ps.setInt(2, project.getAssignedUserId());
+
+            result = ps.executeUpdate();
+  			MySqlConnectionPool.releaseConnection(conn);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	public int updateUserProject(Project project,String perviousProject) {
 		String query = " update project set project_name = ? , assigned_userid = ?  where project_name = ? and assigned_userid = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
@@ -93,8 +110,8 @@ public class ProjectDataAccess {
 		ProjectDataAccess da = new ProjectDataAccess();
 		Project p = new Project();
 		p.setName("Dev");
-		p.setAssignedUserId(2);
-		da.updateUserProject(p, "BlockChain");
+		p.setAssignedUserId(3);
+		da.addUserToProject(p);
 		System.out.println();
 	}
 }
