@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pwc.users.dao.User;
+import com.pwc.users.dataacess.ProjectDataAccess;
 import com.pwc.users.dataacess.UserDataAccess;  
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
@@ -23,7 +24,7 @@ public class UserController {
 	private GsonBuilder builder = new GsonBuilder(); 
 	private Gson gson = builder.create() ;
     private UserDataAccess userDataAccess = new UserDataAccess(); 
-    
+
     @GET
     @Path("/getAllUsers")
     public Response getAllUsers() {
@@ -56,4 +57,8 @@ public class UserController {
     	String res = result == -1 ? "Not Deleted" : "Deleted" ;
         return Response.status(200).entity(res).build();
     }
+    
+  
+    
+    
 }   
