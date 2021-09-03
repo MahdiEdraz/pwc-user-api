@@ -35,6 +35,24 @@ public class UserDataAccess {
 		return list ;
 	}
 	
+	public void insertUser(User user) {
+		String query = " insert into user (first_name,last_name,password,user_type) values (?,?,?,?) " ;
+		Connection conn =MySqlConnectionPool.getConnectoin();
+		try(PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setString(1, user.getFirstName());  
+            ps.setString(2, user.getLastName());  
+            ps.setString(3, user.getPassword());  
+            ps.setString(4, user.getUserType());  
+
+            ps.executeUpdate();
+  			MySqlConnectionPool.releaseConnection(conn);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void updateUser(User user) {
 		String query = " update user set first_name = ? , last_name = ? , user_type= ? where id = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
@@ -42,6 +60,7 @@ public class UserDataAccess {
             ps.setString(1, user.getFirstName());  
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getUserType());
+            ps.setInt(4, user.getId());
             ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
 		}
@@ -62,6 +81,18 @@ public class UserDataAccess {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public static void main(String args[]) {
+		UserDataAccess da = new UserDataAccess();
+		User user = new User();
+		user.setFirstName("ahmad");
+		user.setLastName("rr");
+		user.setPassword("frfr");
+		user.setUserType("Manager");
+		user.setId(2);
+		da.updateUser(user);
 		
 	}
 }
