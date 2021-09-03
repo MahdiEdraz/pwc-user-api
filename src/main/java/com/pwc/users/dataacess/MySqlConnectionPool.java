@@ -33,7 +33,7 @@ public class MySqlConnectionPool {
 
     
     public static Connection getConnectoin(){
-        if(connectionPool == null)
+        if(connectionPool == null || connectionPool.size() == 0)
 			try {
 				createConnectionPool(numberOfConnections);
 			} catch (SQLException e) {
@@ -45,9 +45,7 @@ public class MySqlConnectionPool {
 
    
     public static void releaseConnection(Connection connection) throws SQLException{
-
         connectionPool.add(connection);
-        connection.close();
     }
 
     /**
@@ -66,7 +64,4 @@ public class MySqlConnectionPool {
 
     }
     
-    public static void main(String args[]) throws Exception {
-    	
-    }
 }
