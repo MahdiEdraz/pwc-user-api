@@ -54,36 +54,39 @@ public class ProjectDataAccess {
 			
 			return list ;
 	}
-	public void updateUserProject(Project project,String perviousProject) {
+	public int updateUserProject(Project project,String perviousProject) {
 		String query = " update project set project_name = ? , assigned_userid = ?  where project_name = ? and assigned_userid = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
+		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setString(1, project.getName());  
             ps.setInt(2, project.getAssignedUserId());
             ps.setString(3, perviousProject);
             ps.setInt(4, project.getAssignedUserId());
 
-            ps.executeUpdate();
+            result = ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return result;
 	}
 	
-	public void deleteUserFromProject(Project project) {
+	public int deleteUserFromProject(Project project) {
 		String query = " delete from project where project_Name = ? and assigned_userid = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
+		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setString(1, project.getName());  
             ps.setInt(2, project.getAssignedUserId());  
-            ps.executeUpdate();
+            result = ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 		
 	}
 	public static void main(String args[]) {

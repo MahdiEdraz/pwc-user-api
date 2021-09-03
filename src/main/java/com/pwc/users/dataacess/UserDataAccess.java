@@ -35,53 +35,56 @@ public class UserDataAccess {
 		return list ;
 	}
 	
-	public void insertUser(User user) {
+	public int insertUser(User user) {
 		String query = " insert into user (first_name,last_name,password,user_type) values (?,?,?,?) " ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
+		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setString(1, user.getFirstName());  
             ps.setString(2, user.getLastName());  
             ps.setString(3, user.getPassword());  
             ps.setString(4, user.getUserType());  
 
-            ps.executeUpdate();
+            result = ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return result;
 	}
 	
-	public void updateUser(User user) {
+	public int updateUser(User user) {
 		String query = " update user set first_name = ? , last_name = ? , user_type= ? where id = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
+		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setString(1, user.getFirstName());  
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getUserType());
             ps.setInt(4, user.getId());
-            ps.executeUpdate();
+            result =ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return result;
 	}
 	
-	public void deleteUser(int id) {
+	public int deleteUser(int id) {
 		String query = " delete from user where id = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
+		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setInt(1, id);  
-            ps.executeUpdate();
+            result = ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return result;
 	}
 	
 	public static void main(String args[]) {
