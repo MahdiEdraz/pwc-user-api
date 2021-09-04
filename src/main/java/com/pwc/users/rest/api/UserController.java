@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -34,8 +35,8 @@ public class UserController {
     } 
     
     @POST
-    @Path("/createUser/{user}")
-    public Response createUser(@PathParam("user") String userJson) {
+    @Path("/createUser")
+    public Response createUser(@FormParam("userJson") String userJson) {
     	User user = gson.fromJson(userJson, User.class);
     	int result = userDataAccess.insertUser(user);
     	String res = result == -1 ? "Not Added" : "Added" ;
@@ -43,16 +44,16 @@ public class UserController {
     }
     
     @PUT
-    @Path("/updateUser/{user}")
-    public Response updateUser(@PathParam("user") String userJson) {
+    @Path("/updateUser")
+    public Response updateUser(@FormParam("userJson") String userJson) {
     	User user = gson.fromJson(userJson, User.class);
     	int result = userDataAccess.updateUser(user);
     	String res = result == -1 ? "Not updated" : "Updated" ;
     	return Response.status(200).entity(res).build();
     }
-    @DELETE
-    @Path("/deleteUser/{id}")
-    public Response deleteUser(@PathParam("id") int id) {
+    @POST
+    @Path("/deleteUser")
+    public Response deleteUser(@FormParam("id") int id) {
     	int result = userDataAccess.deleteUser(id);
     	String res = result == -1 ? "Not Deleted" : "Deleted" ;
         return Response.status(200).entity(res).build();
