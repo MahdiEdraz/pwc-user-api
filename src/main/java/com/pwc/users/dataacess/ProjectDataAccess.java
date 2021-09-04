@@ -71,14 +71,14 @@ public class ProjectDataAccess {
 		}
 		return result;
 	}
-	public int updateUserProject(Project project,String perviousProject) {
-		String query = " update project set project_name = ? , assigned_userid = ?  where project_name = ? and assigned_userid = ?" ;
+	public int updateUserProject(Project project) {
+		String query = " update project set project_name = ? , assigned_userid = ?  where id = ? and assigned_userid = ?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
 		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setString(1, project.getName());  
             ps.setInt(2, project.getAssignedUserId());
-            ps.setString(3, perviousProject);
+            ps.setInt(3, project.getId());
             ps.setInt(4, project.getAssignedUserId());
 
             result = ps.executeUpdate();
