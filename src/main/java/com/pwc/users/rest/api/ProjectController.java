@@ -60,7 +60,7 @@ public class ProjectController {
 	    	return Response.status(200).entity(res).build();
 	    }
 	    
-	    @DELETE
+	    @POST
 	    @Path("/deleteUserOnProject")
 	    public Response deleteUserOnProject(@FormParam("json") String json) {
 	    	Project project = gson.fromJson(json, Project.class);
