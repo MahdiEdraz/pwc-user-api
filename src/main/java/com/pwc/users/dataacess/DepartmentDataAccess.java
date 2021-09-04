@@ -68,15 +68,15 @@ public class DepartmentDataAccess {
 		}
 		return result;
 	}
-	public int updateUserDepartment(Department department,String previousDepartment) {
-		String query = " update department set department_name = ? , employee_id = ?  where employee_id= ? and department_name =?" ;
+	public int updateUserDepartment(Department department) {
+		String query = " update department set department_name = ? , employee_id = ?  where employee_id= ? and id =?" ;
 		Connection conn =MySqlConnectionPool.getConnectoin();
 		int result = -1;
 		try(PreparedStatement ps = conn.prepareStatement(query)){
             ps.setString(1, department.getDepartmentName());  
             ps.setInt(2, department.getEmployeeId());
             ps.setInt(3, department.getEmployeeId());
-            ps.setString(4,previousDepartment );  
+            ps.setInt(4,department.getId() );  
 
             result = ps.executeUpdate();
   			MySqlConnectionPool.releaseConnection(conn);
