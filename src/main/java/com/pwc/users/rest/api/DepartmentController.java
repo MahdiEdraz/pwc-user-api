@@ -45,7 +45,7 @@ public class DepartmentController {
 	    
 	    @POST
 	    @Path("/assignUserToDepartment")
-	    public Response createUser(@FormParam("json") String userJson) {
+	    public Response assignUserToDepartment(@FormParam("json") String userJson) {
 	    	Department department = gson.fromJson(userJson, Department.class);
 	    	int result = departmentDataAccess.insertUserToDepartment(department);
 	    	String res = result == -1 ? "Not Added" : "Added" ;
