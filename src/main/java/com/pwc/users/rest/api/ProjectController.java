@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -42,8 +43,8 @@ public class ProjectController {
 	        return Response.status(200).entity(json).build();
 	    } 
 	    @POST
-	    @Path("/assignUserToProject/{project}")
-	    public Response assignUserToProject(@PathParam("project") String json) {
+	    @Path("/assignUserToProject")
+	    public Response assignUserToProject(@FormParam("json") String json) {
 	    	Project project = gson.fromJson(json, Project.class);
 	    	int result = projectDataAccess.addUserToProject(project);
 	    	String res = result == -1 ? "Not Added" : "Added" ;
@@ -51,17 +52,17 @@ public class ProjectController {
 	    }
 	    
 	    @PUT
-	    @Path("/updateUserProject/{project}/{previousProject}")
-	    public Response updateUserDepartment(@PathParam("project") String json,@PathParam("previousProject") String previousProject) {
+	    @Path("/updateUserProject")
+	    public Response updateUserDepartment(@FormParam("json")String json) {
 	    	Project project = gson.fromJson(json, Project.class);
-	    	int result = projectDataAccess.updateUserProject(project, previousProject);
+	    	int result = projectDataAccess.updateUserProject(project);
 	    	String res = result == -1 ? "Not updated" : "Updated" ;
 	    	return Response.status(200).entity(res).build();
 	    }
 	    
 	    @DELETE
-	    @Path("/deleteUserOnProject/{project}")
-	    public Response deleteUserOnProject(@PathParam("project") String json) {
+	    @Path("/deleteUserOnProject")
+	    public Response deleteUserOnProject(@FormParam("json") String json) {
 	    	Project project = gson.fromJson(json, Project.class);
 	    	int result = projectDataAccess.deleteUserFromProject(project);
 	    	String res = result == -1 ? "Not Deleted" : "Deleted" ;
